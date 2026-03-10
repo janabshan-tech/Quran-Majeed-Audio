@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran Majeed - Auto Play</title>
+    <!-- Default Tab Title (Jab app load ho rahi ho) -->
+    <title>Quran Majeed</title>
     
     <!-- Favicon -->
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/334/334042.png" type="image/png">
@@ -133,7 +134,7 @@
             surahDropdown.appendChild(option);
         });
 
-        // 🟢 Lock Screen aur Background Controls ke liye function
+        // Lock Screen aur Background Controls ke liye function
         function updateMediaSession(index) {
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({
@@ -145,7 +146,6 @@
                     ]
                 });
 
-                // Lock screen ke buttons ko App ke buttons ke sath jodna
                 navigator.mediaSession.setActionHandler('play', function() { audioPlayer.play(); });
                 navigator.mediaSession.setActionHandler('pause', function() { audioPlayer.pause(); });
                 navigator.mediaSession.setActionHandler('previoustrack', function() { prevSurah(); });
@@ -161,8 +161,15 @@
             let audioUrl = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${surahNumber}.mp3`;
             
             audioPlayer.src = audioUrl;
-            surahTitle.innerText = `${index + 1}. Surah ${surahNames[index]}`;
+            
+            // Surah ka naam jo app mein aur Tab mein dikhega
+            let currentSurahName = `${index + 1}. Surah ${surahNames[index]}`;
+            
+            surahTitle.innerText = currentSurahName;
             surahDropdown.selectedIndex = index;
+            
+            // 👉 YAHAN BROWSER KE TAB KA NAAM CHANGE HOGA 👈
+            document.title = currentSurahName;
             
             // Local Storage mein save karna
             localStorage.setItem(STORAGE_SURAH, index);
