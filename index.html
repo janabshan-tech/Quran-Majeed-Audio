@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Default Tab Title (Jab app load ho rahi ho) -->
-    <title>Quran Majeed</title>
+    <!-- Default Tab Title -->
+    <title>🕋 Quran Majeed</title>
     
-    <!-- Favicon -->
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/334/334042.png" type="image/png">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/334/334042.png">
+    <!-- Sahi Quran Majeed Icon (Favicon) -->
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3069/3069151.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3069/3069151.png">
 
     <style>
         body {
@@ -80,7 +80,8 @@
 <body>
 
     <div class="container">
-        <img src="https://cdn-icons-png.flaticon.com/512/334/334042.png" alt="Quran Icon" class="icon-img">
+        <!-- Center mein Quran ka naya icon -->
+        <img src="https://cdn-icons-png.flaticon.com/512/3069/3069151.png" alt="Quran Icon" class="icon-img">
         
         <h1>Quran Majeed</h1>
         <p>Tilawat: Qari Mishary Rashid Alafasy</p>
@@ -134,7 +135,7 @@
             surahDropdown.appendChild(option);
         });
 
-        // Lock Screen aur Background Controls ke liye function
+        // Lock Screen aur Background Controls
         function updateMediaSession(index) {
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({
@@ -142,7 +143,7 @@
                     artist: 'Qari Mishary Rashid Alafasy',
                     album: 'Quran Majeed - Auto Play',
                     artwork: [
-                        { src: 'https://cdn-icons-png.flaticon.com/512/334/334042.png', sizes: '512x512', type: 'image/png' }
+                        { src: 'https://cdn-icons-png.flaticon.com/512/3069/3069151.png', sizes: '512x512', type: 'image/png' }
                     ]
                 });
 
@@ -157,24 +158,20 @@
         function loadSurah(index, isResuming = false) {
             let surahNumber = (index + 1).toString().padStart(3, '0');
             
-            // Quran.com Ka High Speed Link
+            // Fast Quran.com Server Link
             let audioUrl = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${surahNumber}.mp3`;
             
             audioPlayer.src = audioUrl;
             
-            // Surah ka naam jo app mein aur Tab mein dikhega
             let currentSurahName = `${index + 1}. Surah ${surahNames[index]}`;
             
             surahTitle.innerText = currentSurahName;
             surahDropdown.selectedIndex = index;
             
-            // 👉 YAHAN BROWSER KE TAB KA NAAM CHANGE HOGA 👈
-            document.title = currentSurahName;
+            // Tab mein Khana Kaaba ka emoji aur Surah ka naam aayega
+            document.title = `🕋 ${currentSurahName}`;
             
-            // Local Storage mein save karna
             localStorage.setItem(STORAGE_SURAH, index);
-
-            // Lock Screen ka data update karna
             updateMediaSession(index);
 
             if (!isResuming) {
