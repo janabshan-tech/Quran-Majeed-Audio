@@ -125,6 +125,7 @@
         const STORAGE_SURAH = "quran_saved_surah";
         const STORAGE_TIME = "quran_saved_time";
 
+        // Dropdown menu ko bharna
         surahNames.forEach((surah, index) => {
             let option = document.createElement("option");
             option.value = index;
@@ -132,17 +133,42 @@
             surahDropdown.appendChild(option);
         });
 
+        // 🟢 Lock Screen aur Background Controls ke liye function
+        function updateMediaSession(index) {
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: `${index + 1}. Surah ${surahNames[index]}`,
+                    artist: 'Qari Mishary Rashid Alafasy',
+                    album: 'Quran Majeed - Auto Play',
+                    artwork: [
+                        { src: 'https://cdn-icons-png.flaticon.com/512/334/334042.png', sizes: '512x512', type: 'image/png' }
+                    ]
+                });
+
+                // Lock screen ke buttons ko App ke buttons ke sath jodna
+                navigator.mediaSession.setActionHandler('play', function() { audioPlayer.play(); });
+                navigator.mediaSession.setActionHandler('pause', function() { audioPlayer.pause(); });
+                navigator.mediaSession.setActionHandler('previoustrack', function() { prevSurah(); });
+                navigator.mediaSession.setActionHandler('nexttrack', function() { nextSurah(); });
+            }
+        }
+
+        // Surah load karna
         function loadSurah(index, isResuming = false) {
             let surahNumber = (index + 1).toString().padStart(3, '0');
             
-            // YAHAN QURAN.COM KA HIGH SPEED SERVER LINK LAGA DIYA GAYA HAI
+            // Quran.com Ka High Speed Link
             let audioUrl = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${surahNumber}.mp3`;
             
             audioPlayer.src = audioUrl;
             surahTitle.innerText = `${index + 1}. Surah ${surahNames[index]}`;
             surahDropdown.selectedIndex = index;
             
+            // Local Storage mein save karna
             localStorage.setItem(STORAGE_SURAH, index);
+
+            // Lock Screen ka data update karna
+            updateMediaSession(index);
 
             if (!isResuming) {
                 localStorage.setItem(STORAGE_TIME, 0);
