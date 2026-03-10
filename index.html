@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quran Majeed - Auto Play</title>
     
-    <!-- Favicon (Quran Majeed Picture) -->
+    <!-- Favicon -->
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/334/334042.png" type="image/png">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/334/334042.png">
 
@@ -79,7 +79,6 @@
 <body>
 
     <div class="container">
-        <!-- App ke andar bhi chota sa icon laga diya hai khoobsurati ke liye -->
         <img src="https://cdn-icons-png.flaticon.com/512/334/334042.png" alt="Quran Icon" class="icon-img">
         
         <h1>Quran Majeed</h1>
@@ -135,7 +134,9 @@
 
         function loadSurah(index, isResuming = false) {
             let surahNumber = (index + 1).toString().padStart(3, '0');
-            let audioUrl = `https://server8.mp3quran.net/afs/${surahNumber}.mp3`;
+            
+            // YAHAN QURAN.COM KA HIGH SPEED SERVER LINK LAGA DIYA GAYA HAI
+            let audioUrl = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${surahNumber}.mp3`;
             
             audioPlayer.src = audioUrl;
             surahTitle.innerText = `${index + 1}. Surah ${surahNames[index]}`;
