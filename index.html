@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Default Tab Title -->
     <title>🕋 Quran Majeed</title>
     
-    <!-- PAKKA AUR SECURE KHANA KAABA ICON -->
+    <!-- KHANA KAABA ICON -->
     <link rel="icon" href="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f54b.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f54b.svg">
 
@@ -80,7 +79,6 @@
 <body>
 
     <div class="container">
-        <!-- Center mein Khana Kaaba ka naya Secure icon -->
         <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f54b.svg" alt="Kaaba Icon" class="icon-img">
         
         <h1>Quran Majeed</h1>
@@ -97,7 +95,6 @@
         </audio>
 
         <div class="controls">
-            <!-- Yahan buttons ka text change kar diya gaya hai -->
             <button onclick="prevSurah()">⏮ Previous</button>
             <button onclick="nextSurah()">Next ⏭</button>
         </div>
@@ -139,8 +136,11 @@
         // Lock Screen aur Background Controls
         function updateMediaSession(index) {
             if ('mediaSession' in navigator) {
+                // Lock screen aur Notification bar par bhi "Surah" hataya gaya hai
+                let cleanSurahName = `${index + 1}. ${surahNames[index]}`;
+                
                 navigator.mediaSession.metadata = new MediaMetadata({
-                    title: `${index + 1}. Surah ${surahNames[index]}`,
+                    title: cleanSurahName,
                     artist: 'Qari Mishary Rashid Alafasy',
                     album: 'Quran Majeed - Auto Play',
                     artwork: [
@@ -164,13 +164,16 @@
             
             audioPlayer.src = audioUrl;
             
-            let currentSurahName = `${index + 1}. Surah ${surahNames[index]}`;
+            // App ke andar pura naam dikhega
+            let currentSurahNameFull = `${index + 1}. Surah ${surahNames[index]}`;
+            // Tab ke liye short naam ("Surah" ke bina)
+            let currentSurahNameShort = `${index + 1}. ${surahNames[index]}`;
             
-            surahTitle.innerText = currentSurahName;
+            surahTitle.innerText = currentSurahNameFull;
             surahDropdown.selectedIndex = index;
             
-            // Tab mein Khana Kaaba ka emoji aur Surah ka naam aayega
-            document.title = ` ${currentSurahName}`;
+            // Upar tab mein short naam set kiya
+            document.title = `🕋 ${currentSurahNameShort}`;
             
             localStorage.setItem(STORAGE_SURAH, index);
             updateMediaSession(index);
