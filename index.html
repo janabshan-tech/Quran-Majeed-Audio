@@ -7,7 +7,7 @@
     
     <link rel="icon" href="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f54b.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f54b.svg">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style id="main-styles">
         :root {
@@ -18,80 +18,113 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --glass: rgba(255, 255, 255, 0.05);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, var(--bg-dark), #1e3a8a);
             color: var(--text-main);
-            text-align: center;
-            padding: 30px 20px;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
             min-height: 100vh;
         }
 
         .container {
             background: var(--glass);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 40px 30px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            max-width: 420px;
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            max-width: 400px;
             width: 100%;
+            position: relative;
         }
 
-        .icon-img { width: 90px; margin-bottom: 15px; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.4)); }
-        h1 { font-size: 26px; margin: 0 0 5px 0; font-weight: 700; color: var(--gold); }
-        p { font-size: 14px; color: var(--text-muted); margin-bottom: 25px;}
+        .icon-img { width: 85px; margin-bottom: 15px; filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.5)); transition: var(--transition); }
+        .icon-img:hover { transform: scale(1.05); }
 
+        h1 { font-size: 24px; margin: 0 0 4px 0; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
+        p { font-size: 13px; color: var(--text-muted); margin: 0 0 25px 0; font-weight: 500;}
+
+        /* Premium Select Dropdown Fix */
+        .select-wrapper { position: relative; margin-bottom: 25px; }
+        .select-wrapper::after {
+            content: '▼'; font-size: 10px; color: var(--gold);
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%); pointer-events: none;
+        }
         select {
-            width: 100%; padding: 12px 15px; font-size: 15px;
-            background-color: var(--bg-light); color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px;
-            margin-bottom: 25px; cursor: pointer; font-weight: 600; outline: none; text-align: center;
+            width: 100%; padding: 14px 20px; font-size: 14px;
+            background-color: rgba(30, 41, 59, 0.8); color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px;
+            cursor: pointer; font-weight: 600; outline: none; text-align: left;
+            appearance: none; -webkit-appearance: none; transition: var(--transition);
         }
-        select:focus { border-color: var(--gold); }
+        select:focus, select:hover { border-color: rgba(251, 191, 36, 0.5); background-color: var(--bg-light); }
 
-        .saved-msg { font-size: 12px; color: #10b981; margin-bottom: 15px; display: none; font-weight: 600;}
+        .saved-msg-container { height: 20px; margin-bottom: 15px; }
+        .saved-msg { font-size: 12px; color: #10b981; font-weight: 600; display: none; opacity: 0; transition: opacity 0.3s; }
 
-        /* Custom Range Slider */
-        .progress-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; font-size: 13px; color: var(--text-muted); font-weight: 600; }
-        input[type=range] { -webkit-appearance: none; width: 100%; margin: 0 10px; background: transparent; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; cursor: pointer; }
-        input[type=range]::-webkit-slider-thumb { height: 16px; width: 16px; border-radius: 50%; background: var(--gold); cursor: pointer; -webkit-appearance: none; margin-top: -5px; box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+        /* Spotify-style Slider */
+        .progress-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; font-size: 12px; color: var(--text-muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+        input[type=range] { -webkit-appearance: none; width: 100%; margin: 0 12px; background: transparent; height: 16px; display: flex; align-items: center; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: rgba(255, 255, 255, 0.15); border-radius: 2px; cursor: pointer; transition: var(--transition); }
+        input[type=range]:hover::-webkit-slider-runnable-track { background: rgba(255, 255, 255, 0.25); }
+        input[type=range]::-webkit-slider-thumb { height: 12px; width: 12px; border-radius: 50%; background: var(--text-main); cursor: pointer; -webkit-appearance: none; margin-top: -4px; transition: var(--transition); box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+        input[type=range]:hover::-webkit-slider-thumb { background: var(--gold); transform: scale(1.3); box-shadow: 0 0 10px rgba(251, 191, 36, 0.4); }
 
-        /* Player Controls */
-        .main-controls { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px; }
-        .btn-icon { background: none; border: none; color: var(--text-main); font-size: 24px; cursor: pointer; transition: 0.2s; }
-        .btn-icon:hover { color: var(--gold); transform: scale(1.1); }
-        .btn-play { background: var(--gold); color: var(--bg-dark); width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
-        .btn-play:hover { background: var(--gold-hover); transform: scale(1.05); }
+        /* Controls Grid */
+        .main-controls { display: flex; align-items: center; justify-content: center; gap: 25px; margin-bottom: 20px; }
+        .btn-icon { background: none; border: none; color: var(--text-main); font-size: 22px; cursor: pointer; transition: var(--transition); padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .btn-icon:hover { color: var(--gold); background: rgba(255, 255, 255, 0.05); }
+        .btn-icon:active { transform: scale(0.85); }
+        
+        .btn-play { background: var(--gold); color: var(--bg-dark); width: 64px; height: 64px; border-radius: 50%; border: none; font-size: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3); }
+        .btn-play:hover { background: var(--gold-hover); transform: scale(1.05); box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4); }
+        .btn-play:active { transform: scale(0.95); }
 
-        .secondary-controls { display: flex; justify-content: center; gap: 15px; }
-        .btn-seek { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-seek:hover { border-color: var(--gold); color: var(--gold); }
+        .secondary-controls { display: flex; justify-content: center; gap: 12px; }
+        .btn-seek { background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); color: var(--text-muted); padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 5px; }
+        .btn-seek:hover { border-color: var(--gold); color: var(--gold); background: rgba(251, 191, 36, 0.05); }
+        .btn-seek:active { transform: scale(0.95); }
 
-        .btn-toggle-mini { background: transparent; color: var(--text-muted); border: none; font-size: 13px; cursor: pointer; margin-top: 25px; text-decoration: underline; transition: 0.2s; }
-        .btn-toggle-mini:hover { color: var(--gold); }
+        .btn-toggle-mini { background: rgba(0,0,0,0.2); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 25px; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+        .btn-toggle-mini:hover { color: var(--text-main); background: rgba(0,0,0,0.4); }
 
-        /* FLOATING MINI PLAYER */
+        /* Loader Animation */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loading { animation: spin 1s linear infinite; font-size: 24px; }
+
+        /* Normal Mini Player */
         #mini-player {
-            display: none; position: fixed; bottom: 25px; right: 25px;
+            display: none; position: fixed; bottom: 20px; right: 20px;
             background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            z-index: 9999; text-align: center; width: 240px; backdrop-filter: blur(10px);
+            border-radius: 20px; padding: 15px 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            z-index: 9999; width: 280px; backdrop-filter: blur(15px);
+            opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s;
         }
-        #mini-title { font-size: 14px; font-weight: 600; color: var(--gold); margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Poppins', sans-serif;}
-        .mini-controls { display: flex; justify-content: space-around; align-items: center; }
-        .mini-btn { background: none; border: none; color: white; font-size: 18px; cursor: pointer; transition: 0.2s; }
+        #mini-player.show { display: block; opacity: 1; transform: translateY(0); }
+        #mini-title { font-size: 13px; font-weight: 600; color: var(--gold); margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;}
+        .mini-controls { display: flex; justify-content: space-between; align-items: center; padding: 0 10px;}
+        .mini-btn { background: none; border: none; color: var(--text-main); font-size: 18px; cursor: pointer; transition: var(--transition); padding: 5px;}
         .mini-btn:hover { color: var(--gold); }
-        .mini-play { background: var(--gold); color: var(--bg-dark); width: 40px; height: 40px; border-radius: 50%; font-size: 18px; display: flex; justify-content: center; align-items: center;}
-        .close-mini { position: absolute; top: -8px; right: -8px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; padding: 0; font-size: 12px;}
+        .mini-play { background: var(--gold); color: var(--bg-dark); width: 42px; height: 42px; border-radius: 50%; font-size: 18px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(251, 191, 36, 0.2);}
+        .close-mini { position: absolute; top: -8px; right: -8px; background: #334155; color: var(--text-main); border: 2px solid #0f172a; border-radius: 50%; width: 26px; height: 26px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 10px; transition: var(--transition);}
+        .close-mini:hover { background: #ef4444; }
+
+        /* PiP Mode CSS overrides */
+        body.pip-mode { margin: 0; padding: 0; background: var(--bg-dark); height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center;}
+        body.pip-mode #mini-player { position: static; width: 100%; height: 100%; border: none; border-radius: 0; box-shadow: none; display: flex; flex-direction: column; justify-content: center; padding: 25px; opacity: 1; transform: none;}
+        body.pip-mode .close-mini { display: none; }
+        body.pip-mode #mini-title { font-size: 16px; margin-bottom: 25px; }
+        body.pip-mode .mini-play { width: 56px; height: 56px; font-size: 24px; }
+        body.pip-mode .mini-btn { font-size: 24px; }
 
         audio { display: none; }
     </style>
@@ -103,8 +136,13 @@
         <h1>Quran Majeed</h1>
         <p>Qari Mishary Rashid Alafasy</p>
         
-        <select id="surah-list" onchange="changeSurahFromList()"></select>
-        <div id="saved-msg" class="saved-msg">✓ Wahan se shuru kiya gaya jahan chhora tha</div>
+        <div class="select-wrapper">
+            <select id="surah-list" onchange="changeSurahFromList()"></select>
+        </div>
+        
+        <div class="saved-msg-container">
+            <div id="saved-msg" class="saved-msg">✓ Wahan se shuru kiya gaya jahan chhora tha</div>
+        </div>
 
         <audio id="audio-player" preload="metadata"></audio>
 
@@ -115,18 +153,17 @@
         </div>
 
         <div class="main-controls">
-            <button class="btn-icon" onclick="prevSurah()">⏮</button>
+            <button class="btn-icon" onclick="prevSurah()" title="Previous">⏮</button>
             <button class="btn-play" id="main-play-btn" onclick="togglePlayPause()">▶</button>
-            <button class="btn-icon" onclick="nextSurah()">⏭</button>
+            <button class="btn-icon" onclick="nextSurah()" title="Next">⏭</button>
         </div>
 
         <div class="secondary-controls">
-            <button class="btn-seek" onclick="seekBackward()">⏪ -10s</button>
-            <button class="btn-seek" onclick="seekForward()">+10s ⏩</button>
+            <button class="btn-seek" onclick="seekBackward()">⏪ 10s</button>
+            <button class="btn-seek" onclick="seekForward()">10s ⏩</button>
         </div>
 
-        <!-- Pop-out PIP Button -->
-        <button class="btn-toggle-mini" onclick="toggleFloatingPlayer()">⇱ Pop-out Mini Player (All Tabs)</button>
+        <button class="btn-toggle-mini" onclick="toggleFloatingPlayer()">⇱ Pop-out Mini Player</button>
     </div>
 
     <!-- MINI PLAYER -->
@@ -157,7 +194,7 @@
         ];
 
         let currentSurahIndex = 0;
-        let isDragging = false; // BUG FIX 1: Slider jumping fix
+        let isDragging = false; 
 
         const audioPlayer = document.getElementById("audio-player");
         const surahDropdown = document.getElementById("surah-list");
@@ -168,12 +205,13 @@
         const miniPlayer = document.getElementById("mini-player");
         const miniTitle = document.getElementById("mini-title");
         const miniPlayBtn = document.getElementById("mini-play-btn");
+        const savedMsg = document.getElementById("saved-msg");
 
         let pipWindow = null; 
 
         surahNames.forEach((surah, index) => {
             let option = document.createElement("option");
-            option.value = index; option.text = `${index + 1}. Surah ${surah}`;
+            option.value = index; option.text = `${index + 1}. ${surah}`;
             surahDropdown.appendChild(option);
         });
 
@@ -183,50 +221,58 @@
             return `${min < 10 ? '0' + min : min}:${rawSec < 10 ? '0' + rawSec : rawSec}`;
         }
 
+        // Show Loading State Bug Fix
+        function showLoading() {
+            mainPlayBtn.innerHTML = "⏳";
+            mainPlayBtn.classList.add("loading");
+            miniPlayBtn.innerHTML = "⏳";
+        }
+        function hideLoading() {
+            mainPlayBtn.classList.remove("loading");
+            if(audioPlayer.paused) { mainPlayBtn.innerHTML = "▶"; miniPlayBtn.innerHTML = "▶"; }
+            else { mainPlayBtn.innerHTML = "⏸"; miniPlayBtn.innerHTML = "⏸"; }
+        }
+
+        audioPlayer.addEventListener('waiting', showLoading);
+        audioPlayer.addEventListener('playing', hideLoading);
+        audioPlayer.addEventListener('canplay', hideLoading);
+
         async function toggleFloatingPlayer() {
             if ('documentPictureInPicture' in window) {
                 if (pipWindow) { pipWindow.close(); return; }
                 try {
-                    pipWindow = await window.documentPictureInPicture.requestWindow({ width: 300, height: 120 });
+                    pipWindow = await window.documentPictureInPicture.requestWindow({ width: 340, height: 160 });
                     const style = document.createElement('style');
                     style.textContent = document.getElementById('main-styles').textContent;
                     pipWindow.document.head.appendChild(style);
 
-                    miniPlayer.style.display = 'block';
-                    miniPlayer.style.position = 'relative';
-                    miniPlayer.style.bottom = 'auto';
-                    miniPlayer.style.right = 'auto';
-                    
+                    pipWindow.document.body.classList.add('pip-mode');
+                    miniPlayer.style.display = 'flex';
                     pipWindow.document.body.appendChild(miniPlayer);
-                    pipWindow.document.body.style.background = '#0f172a';
-                    pipWindow.document.body.style.display = 'flex';
-                    pipWindow.document.body.style.justifyContent = 'center';
-                    pipWindow.document.body.style.alignItems = 'center';
 
                     pipWindow.addEventListener("pagehide", () => {
-                        // BUG FIX 3: Restore cleanly when PiP closed
                         document.body.appendChild(miniPlayer);
-                        miniPlayer.style.position = 'fixed';
-                        miniPlayer.style.bottom = '25px';
-                        miniPlayer.style.right = '25px';
-                        miniPlayer.style.display = 'none';
+                        miniPlayer.classList.remove('show');
+                        setTimeout(() => { if(!pipWindow) miniPlayer.style.display = 'none'; }, 300);
                         pipWindow = null;
                     });
-                } catch (error) {
-                    normalMiniPlayer();
-                }
-            } else {
-                normalMiniPlayer();
-            }
+                } catch (error) { normalMiniPlayer(); }
+            } else { normalMiniPlayer(); }
         }
 
         function normalMiniPlayer() {
-            miniPlayer.style.display = (miniPlayer.style.display === "none" || miniPlayer.style.display === "") ? "block" : "none";
+            if (miniPlayer.classList.contains('show')) {
+                miniPlayer.classList.remove('show');
+                setTimeout(() => { miniPlayer.style.display = 'none'; }, 300);
+            } else {
+                miniPlayer.style.display = 'block';
+                setTimeout(() => { miniPlayer.classList.add('show'); }, 10);
+            }
         }
 
         function closeMiniPlayer() {
             if (pipWindow) { pipWindow.close(); } 
-            else { miniPlayer.style.display = "none"; }
+            else { normalMiniPlayer(); }
         }
 
         function togglePlayPause() {
@@ -236,7 +282,6 @@
         audioPlayer.addEventListener('play', () => { mainPlayBtn.innerHTML = "⏸"; miniPlayBtn.innerHTML = "⏸"; });
         audioPlayer.addEventListener('pause', () => { mainPlayBtn.innerHTML = "▶"; miniPlayBtn.innerHTML = "▶"; });
 
-        // BUG FIX 1 (Applied): Update slider ONLY if user is not dragging it
         audioPlayer.addEventListener('timeupdate', () => {
             if (audioPlayer.duration && !isDragging) {
                 progressBar.value = audioPlayer.currentTime;
@@ -250,26 +295,16 @@
             totalTimeEl.innerText = formatTime(audioPlayer.duration);
         });
 
-        // BUG FIX 1 (Applied): Drag Logic handlers
         progressBar.addEventListener('mousedown', () => isDragging = true);
         progressBar.addEventListener('touchstart', () => isDragging = true);
+        progressBar.addEventListener('input', () => currentTimeEl.innerText = formatTime(progressBar.value));
         
-        progressBar.addEventListener('input', () => {
-            currentTimeEl.innerText = formatTime(progressBar.value);
-        });
-
-        progressBar.addEventListener('mouseup', () => {
-            isDragging = false;
-            audioPlayer.currentTime = progressBar.value;
-        });
-        progressBar.addEventListener('touchend', () => {
-            isDragging = false;
-            audioPlayer.currentTime = progressBar.value;
-        });
+        const endDrag = () => { if(isDragging){ isDragging = false; audioPlayer.currentTime = progressBar.value; } };
+        progressBar.addEventListener('mouseup', endDrag);
+        progressBar.addEventListener('touchend', endDrag);
 
         function updateMediaSession(index) {
             if ('mediaSession' in navigator) {
-                // BUG FIX 2: Used PNG format for lock screen compatibility
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: `${index + 1}. ${surahNames[index]}`,
                     artist: 'Qari Mishary Rashid Alafasy',
@@ -284,7 +319,17 @@
             }
         }
 
+        function showSavedMessage() {
+            savedMsg.style.display = "block";
+            setTimeout(() => { savedMsg.style.opacity = "1"; }, 10);
+            setTimeout(() => { 
+                savedMsg.style.opacity = "0"; 
+                setTimeout(() => { savedMsg.style.display = "none"; }, 300);
+            }, 4000);
+        }
+
         function loadSurah(index, isResuming = false) {
+            showLoading(); // UI Bug Fix 2
             let surahNumber = (index + 1).toString().padStart(3, '0');
             audioPlayer.src = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${surahNumber}.mp3`;
             
@@ -295,15 +340,13 @@
             localStorage.setItem("quran_saved_surah", index);
             updateMediaSession(index);
 
-            // Reset UI for new surah
             progressBar.value = 0;
             currentTimeEl.innerText = "00:00";
             if(!isResuming) totalTimeEl.innerText = "00:00";
 
             if (!isResuming) {
                 localStorage.setItem("quran_saved_time", 0);
-                audioPlayer.play().catch(e => console.log("Waiting for user input"));
-                document.getElementById("saved-msg").style.display = "none";
+                audioPlayer.play().catch(e => hideLoading());
             }
         }
 
@@ -324,7 +367,7 @@
             audioPlayer.addEventListener("loadedmetadata", function setTimeOnce() {
                 if (savedTime !== null && parseFloat(savedTime) > 0) {
                     audioPlayer.currentTime = parseFloat(savedTime);
-                    document.getElementById("saved-msg").style.display = "block";
+                    showSavedMessage();
                 }
                 audioPlayer.removeEventListener("loadedmetadata", setTimeOnce);
             });
