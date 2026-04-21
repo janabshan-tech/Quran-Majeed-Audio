@@ -52,7 +52,6 @@
         h1 { font-size: 24px; margin: 0 0 4px 0; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
         p { font-size: 13px; color: var(--text-muted); margin: 0 0 25px 0; font-weight: 500;}
 
-        /* Premium Select Dropdown Fix */
         .select-wrapper { position: relative; margin-bottom: 25px; }
         .select-wrapper::after {
             content: '▼'; font-size: 10px; color: var(--gold);
@@ -70,7 +69,6 @@
         .saved-msg-container { height: 20px; margin-bottom: 15px; }
         .saved-msg { font-size: 12px; color: #10b981; font-weight: 600; display: none; opacity: 0; transition: opacity 0.3s; }
 
-        /* Spotify-style Slider */
         .progress-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; font-size: 12px; color: var(--text-muted); font-weight: 600; font-variant-numeric: tabular-nums; }
         input[type=range] { -webkit-appearance: none; width: 100%; margin: 0 12px; background: transparent; height: 16px; display: flex; align-items: center; }
         input[type=range]:focus { outline: none; }
@@ -79,7 +77,6 @@
         input[type=range]::-webkit-slider-thumb { height: 12px; width: 12px; border-radius: 50%; background: var(--text-main); cursor: pointer; -webkit-appearance: none; margin-top: -4px; transition: var(--transition); box-shadow: 0 0 5px rgba(0,0,0,0.3); }
         input[type=range]:hover::-webkit-slider-thumb { background: var(--gold); transform: scale(1.3); box-shadow: 0 0 10px rgba(251, 191, 36, 0.4); }
 
-        /* Controls Grid */
         .main-controls { display: flex; align-items: center; justify-content: center; gap: 25px; margin-bottom: 20px; }
         .btn-icon { background: none; border: none; color: var(--text-main); font-size: 22px; cursor: pointer; transition: var(--transition); padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .btn-icon:hover { color: var(--gold); background: rgba(255, 255, 255, 0.05); }
@@ -97,7 +94,6 @@
         .btn-toggle-mini { background: rgba(0,0,0,0.2); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 25px; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
         .btn-toggle-mini:hover { color: var(--text-main); background: rgba(0,0,0,0.4); }
 
-        /* Loader Animation */
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .loading { animation: spin 1s linear infinite; font-size: 24px; }
 
@@ -118,13 +114,16 @@
         .close-mini { position: absolute; top: -8px; right: -8px; background: #334155; color: var(--text-main); border: 2px solid #0f172a; border-radius: 50%; width: 26px; height: 26px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 10px; transition: var(--transition);}
         .close-mini:hover { background: #ef4444; }
 
-        /* PiP Mode CSS overrides */
+        /* PiP Mode CSS overrides (MICRO WIDGET DESIGN) */
         body.pip-mode { margin: 0; padding: 0; background: var(--bg-dark); height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center;}
-        body.pip-mode #mini-player { position: static; width: 100%; height: 100%; border: none; border-radius: 0; box-shadow: none; display: flex; flex-direction: column; justify-content: center; padding: 25px; opacity: 1; transform: none;}
+        body.pip-mode #mini-player { position: static; width: 100%; height: 100%; border: none; border-radius: 0; box-shadow: none; display: flex; flex-direction: column; justify-content: center; padding: 10px; opacity: 1; transform: none;}
         body.pip-mode .close-mini { display: none; }
-        body.pip-mode #mini-title { font-size: 16px; margin-bottom: 25px; }
-        body.pip-mode .mini-play { width: 56px; height: 56px; font-size: 24px; }
-        body.pip-mode .mini-btn { font-size: 24px; }
+        
+        /* Adjusted text size and spacing for micro window */
+        body.pip-mode #mini-title { font-size: 14px; margin-bottom: 12px; }
+        body.pip-mode .mini-controls { padding: 0 5px; gap: 15px; justify-content: center;}
+        body.pip-mode .mini-play { width: 40px; height: 40px; font-size: 18px; }
+        body.pip-mode .mini-btn { font-size: 18px; }
 
         audio { display: none; }
     </style>
@@ -215,7 +214,6 @@
             surahDropdown.appendChild(option);
         });
 
-        // Event Listeners for Mini Player Buttons (Bug Fix for PiP buttons not working)
         document.getElementById("btn-mini-close").addEventListener("click", closeMiniPlayer);
         document.getElementById("btn-mini-prev").addEventListener("click", prevSurah);
         document.getElementById("mini-play-btn").addEventListener("click", togglePlayPause);
@@ -248,7 +246,8 @@
             if ('documentPictureInPicture' in window) {
                 if (pipWindow) { pipWindow.close(); return; }
                 try {
-                    pipWindow = await window.documentPictureInPicture.requestWindow({ width: 340, height: 160 });
+                    // YAHAN WIDGET KA SIZE SAB SE CHOTA KAR DIYA GAYA HAI (240x95)
+                    pipWindow = await window.documentPictureInPicture.requestWindow({ width: 240, height: 95 });
                     const style = document.createElement('style');
                     style.textContent = document.getElementById('main-styles').textContent;
                     pipWindow.document.head.appendChild(style);
