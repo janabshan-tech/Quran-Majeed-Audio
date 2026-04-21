@@ -91,7 +91,7 @@
         .mini-btn { background: none; border: none; color: white; font-size: 18px; cursor: pointer; transition: 0.2s; }
         .mini-btn:hover { color: var(--gold); }
         .mini-play { background: var(--gold); color: var(--bg-dark); width: 40px; height: 40px; border-radius: 50%; font-size: 18px; display: flex; justify-content: center; align-items: center;}
-        .close-mini { position: absolute; top: -8px; right: -8px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .close-mini { position: absolute; top: -8px; right: -8px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; padding: 0; font-size: 12px;}
 
         audio { display: none; }
     </style>
@@ -157,6 +157,8 @@
         ];
 
         let currentSurahIndex = 0;
+        let isDragging = false; // BUG FIX 1: Slider jumping fix
+
         const audioPlayer = document.getElementById("audio-player");
         const surahDropdown = document.getElementById("surah-list");
         const mainPlayBtn = document.getElementById("main-play-btn");
@@ -167,7 +169,7 @@
         const miniTitle = document.getElementById("mini-title");
         const miniPlayBtn = document.getElementById("mini-play-btn");
 
-        let pipWindow = null; // Picture-in-Picture window object
+        let pipWindow = null; 
 
         surahNames.forEach((surah, index) => {
             let option = document.createElement("option");
@@ -176,27 +178,20 @@
         });
 
         function formatTime(sec) {
-            if (isNaN(sec)) return "00:00";
+            if (isNaN(sec) || !isFinite(sec)) return "00:00";
             let min = Math.floor(sec / 60); let rawSec = Math.floor(sec % 60);
             return `${min < 10 ? '0' + min : min}:${rawSec < 10 ? '0' + rawSec : rawSec}`;
         }
 
-        // --- NAYA ZABARDAST CROSS-TAB FLOATING PLAYER (PiP) ---
         async function toggleFloatingPlayer() {
-            // Agar browser Picture-in-Picture support karta hai (Jaise Chrome/Edge Desktop)
             if ('documentPictureInPicture' in window) {
                 if (pipWindow) { pipWindow.close(); return; }
-                
                 try {
-                    // Ek asli nayi window banayen jo sab tabs ke upar rahegi
                     pipWindow = await window.documentPictureInPicture.requestWindow({ width: 300, height: 120 });
-                    
-                    // Design (CSS) ko nayi window mein bhejen
                     const style = document.createElement('style');
                     style.textContent = document.getElementById('main-styles').textContent;
                     pipWindow.document.head.appendChild(style);
 
-                    // Mini Player ko nikal kar nayi window mein dalen
                     miniPlayer.style.display = 'block';
                     miniPlayer.style.position = 'relative';
                     miniPlayer.style.bottom = 'auto';
@@ -208,34 +203,31 @@
                     pipWindow.document.body.style.justifyContent = 'center';
                     pipWindow.document.body.style.alignItems = 'center';
 
-                    // Jab window band ho to player wapas main screen par aa jaye
                     pipWindow.addEventListener("pagehide", () => {
+                        // BUG FIX 3: Restore cleanly when PiP closed
+                        document.body.appendChild(miniPlayer);
                         miniPlayer.style.position = 'fixed';
                         miniPlayer.style.bottom = '25px';
                         miniPlayer.style.right = '25px';
                         miniPlayer.style.display = 'none';
-                        document.body.appendChild(miniPlayer);
                         pipWindow = null;
                     });
                 } catch (error) {
-                    console.log("PiP Failed, using normal mode.");
                     normalMiniPlayer();
                 }
             } else {
-                // Agar PiP support nahi hai (jaise Mobile par), to aam mini player chalayen
                 normalMiniPlayer();
             }
         }
 
         function normalMiniPlayer() {
-            miniPlayer.style.display = "block";
+            miniPlayer.style.display = (miniPlayer.style.display === "none" || miniPlayer.style.display === "") ? "block" : "none";
         }
 
         function closeMiniPlayer() {
             if (pipWindow) { pipWindow.close(); } 
             else { miniPlayer.style.display = "none"; }
         }
-        // ----------------------------------------------------
 
         function togglePlayPause() {
             if (audioPlayer.paused) audioPlayer.play(); else audioPlayer.pause();
@@ -244,8 +236,9 @@
         audioPlayer.addEventListener('play', () => { mainPlayBtn.innerHTML = "⏸"; miniPlayBtn.innerHTML = "⏸"; });
         audioPlayer.addEventListener('pause', () => { mainPlayBtn.innerHTML = "▶"; miniPlayBtn.innerHTML = "▶"; });
 
+        // BUG FIX 1 (Applied): Update slider ONLY if user is not dragging it
         audioPlayer.addEventListener('timeupdate', () => {
-            if (audioPlayer.duration) {
+            if (audioPlayer.duration && !isDragging) {
                 progressBar.value = audioPlayer.currentTime;
                 currentTimeEl.innerText = formatTime(audioPlayer.currentTime);
                 if (audioPlayer.currentTime > 0) localStorage.setItem("quran_saved_time", audioPlayer.currentTime);
@@ -257,19 +250,37 @@
             totalTimeEl.innerText = formatTime(audioPlayer.duration);
         });
 
-        progressBar.addEventListener('input', () => { audioPlayer.currentTime = progressBar.value; });
+        // BUG FIX 1 (Applied): Drag Logic handlers
+        progressBar.addEventListener('mousedown', () => isDragging = true);
+        progressBar.addEventListener('touchstart', () => isDragging = true);
+        
+        progressBar.addEventListener('input', () => {
+            currentTimeEl.innerText = formatTime(progressBar.value);
+        });
+
+        progressBar.addEventListener('mouseup', () => {
+            isDragging = false;
+            audioPlayer.currentTime = progressBar.value;
+        });
+        progressBar.addEventListener('touchend', () => {
+            isDragging = false;
+            audioPlayer.currentTime = progressBar.value;
+        });
 
         function updateMediaSession(index) {
             if ('mediaSession' in navigator) {
+                // BUG FIX 2: Used PNG format for lock screen compatibility
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: `${index + 1}. ${surahNames[index]}`,
                     artist: 'Qari Mishary Rashid Alafasy',
-                    artwork: [{ src: 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f54b.svg', sizes: '512x512', type: 'image/svg+xml' }]
+                    artwork: [{ src: 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f54b.png', sizes: '72x72', type: 'image/png' }]
                 });
                 navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
                 navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
                 navigator.mediaSession.setActionHandler('previoustrack', prevSurah);
                 navigator.mediaSession.setActionHandler('nexttrack', nextSurah);
+                navigator.mediaSession.setActionHandler('seekbackward', seekBackward);
+                navigator.mediaSession.setActionHandler('seekforward', seekForward);
             }
         }
 
@@ -284,26 +295,32 @@
             localStorage.setItem("quran_saved_surah", index);
             updateMediaSession(index);
 
+            // Reset UI for new surah
+            progressBar.value = 0;
+            currentTimeEl.innerText = "00:00";
+            if(!isResuming) totalTimeEl.innerText = "00:00";
+
             if (!isResuming) {
                 localStorage.setItem("quran_saved_time", 0);
-                audioPlayer.play();
+                audioPlayer.play().catch(e => console.log("Waiting for user input"));
                 document.getElementById("saved-msg").style.display = "none";
             }
         }
 
-        window.prevSurah = () => { if (currentSurahIndex > 0) { currentSurahIndex--; loadSurah(currentSurahIndex); } };
-        window.nextSurah = () => { currentSurahIndex = (currentSurahIndex < 113) ? currentSurahIndex + 1 : 0; loadSurah(currentSurahIndex); };
-        window.seekForward = () => { if (isFinite(audioPlayer.duration)) audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 10, audioPlayer.duration); };
-        window.seekBackward = () => { if (isFinite(audioPlayer.duration)) audioPlayer.currentTime = Math.max(audioPlayer.currentTime - 10, 0); };
+        function prevSurah() { if (currentSurahIndex > 0) { currentSurahIndex--; loadSurah(currentSurahIndex); } }
+        function nextSurah() { currentSurahIndex = (currentSurahIndex < 113) ? currentSurahIndex + 1 : 0; loadSurah(currentSurahIndex); }
+        function seekForward() { if (isFinite(audioPlayer.duration)) audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 10, audioPlayer.duration); }
+        function seekBackward() { if (isFinite(audioPlayer.duration)) audioPlayer.currentTime = Math.max(audioPlayer.currentTime - 10, 0); }
         
         audioPlayer.addEventListener("ended", nextSurah);
-        window.changeSurahFromList = () => { currentSurahIndex = parseInt(surahDropdown.value); loadSurah(currentSurahIndex); };
+        function changeSurahFromList() { currentSurahIndex = parseInt(surahDropdown.value); loadSurah(currentSurahIndex); }
 
         window.onload = () => {
             let savedSurah = localStorage.getItem("quran_saved_surah");
             let savedTime = localStorage.getItem("quran_saved_time");
             if (savedSurah !== null) currentSurahIndex = parseInt(savedSurah);
             loadSurah(currentSurahIndex, true);
+            
             audioPlayer.addEventListener("loadedmetadata", function setTimeOnce() {
                 if (savedTime !== null && parseFloat(savedTime) > 0) {
                     audioPlayer.currentTime = parseFloat(savedTime);
