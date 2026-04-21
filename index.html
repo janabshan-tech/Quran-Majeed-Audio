@@ -168,12 +168,12 @@
 
     <!-- MINI PLAYER -->
     <div id="mini-player">
-        <button class="close-mini" onclick="closeMiniPlayer()">✕</button>
+        <button class="close-mini" id="btn-mini-close">✕</button>
         <div id="mini-title">🕋 1. Al-Fatihah</div>
         <div class="mini-controls">
-            <button class="mini-btn" onclick="prevSurah()">⏮</button>
-            <button class="mini-btn mini-play" id="mini-play-btn" onclick="togglePlayPause()">▶</button>
-            <button class="mini-btn" onclick="nextSurah()">⏭</button>
+            <button class="mini-btn" id="btn-mini-prev">⏮</button>
+            <button class="mini-btn mini-play" id="mini-play-btn">▶</button>
+            <button class="mini-btn" id="btn-mini-next">⏭</button>
         </div>
     </div>
 
@@ -215,20 +215,27 @@
             surahDropdown.appendChild(option);
         });
 
+        // Event Listeners for Mini Player Buttons (Bug Fix for PiP buttons not working)
+        document.getElementById("btn-mini-close").addEventListener("click", closeMiniPlayer);
+        document.getElementById("btn-mini-prev").addEventListener("click", prevSurah);
+        document.getElementById("mini-play-btn").addEventListener("click", togglePlayPause);
+        document.getElementById("btn-mini-next").addEventListener("click", nextSurah);
+
         function formatTime(sec) {
             if (isNaN(sec) || !isFinite(sec)) return "00:00";
             let min = Math.floor(sec / 60); let rawSec = Math.floor(sec % 60);
             return `${min < 10 ? '0' + min : min}:${rawSec < 10 ? '0' + rawSec : rawSec}`;
         }
 
-        // Show Loading State Bug Fix
         function showLoading() {
             mainPlayBtn.innerHTML = "⏳";
             mainPlayBtn.classList.add("loading");
             miniPlayBtn.innerHTML = "⏳";
+            miniPlayBtn.classList.add("loading");
         }
         function hideLoading() {
             mainPlayBtn.classList.remove("loading");
+            miniPlayBtn.classList.remove("loading");
             if(audioPlayer.paused) { mainPlayBtn.innerHTML = "▶"; miniPlayBtn.innerHTML = "▶"; }
             else { mainPlayBtn.innerHTML = "⏸"; miniPlayBtn.innerHTML = "⏸"; }
         }
@@ -329,7 +336,7 @@
         }
 
         function loadSurah(index, isResuming = false) {
-            showLoading(); // UI Bug Fix 2
+            showLoading(); 
             let surahNumber = (index + 1).toString().padStart(3, '0');
             audioPlayer.src = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${surahNumber}.mp3`;
             
