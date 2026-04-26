@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕋 Quran Majeed</title>
+    <title>🕋 Quran Majeed - Cloud Sync</title>
     
     <link rel="icon" href="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f54b.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f54b.svg">
@@ -18,7 +18,7 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --glass: rgba(255, 255, 255, 0.05);
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.2s ease-in-out;
         }
 
         * { box-sizing: border-box; }
@@ -35,115 +35,93 @@
 
         .container {
             background: var(--glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 40px 30px;
-            border-radius: 28px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 35px 25px;
+            border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 380px;
             width: 100%;
+            text-align: center;
             position: relative;
         }
 
-        .icon-img { width: 85px; margin-bottom: 15px; filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.5)); transition: var(--transition); }
-        .icon-img:hover { transform: scale(1.05); }
-
-        h1 { font-size: 24px; margin: 0 0 4px 0; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
-        p { font-size: 13px; color: var(--text-muted); margin: 0 0 25px 0; font-weight: 500;}
-
-        .select-wrapper { position: relative; margin-bottom: 25px; }
-        .select-wrapper::after {
-            content: '▼'; font-size: 10px; color: var(--gold);
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%); pointer-events: none;
-        }
-        select {
-            width: 100%; padding: 14px 20px; font-size: 14px;
-            background-color: rgba(30, 41, 59, 0.8); color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px;
-            cursor: pointer; font-weight: 600; outline: none; text-align: left;
-            appearance: none; -webkit-appearance: none; transition: var(--transition);
-        }
-        select:focus, select:hover { border-color: rgba(251, 191, 36, 0.5); background-color: var(--bg-light); }
-
-        .saved-msg-container { height: 20px; margin-bottom: 15px; }
-        .saved-msg { font-size: 12px; color: #10b981; font-weight: 600; display: none; opacity: 0; transition: opacity 0.3s; }
-
-        /* Main Progress Bar */
-        .progress-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; font-size: 12px; color: var(--text-muted); font-weight: 600; font-variant-numeric: tabular-nums; }
-        input[type=range] { -webkit-appearance: none; width: 100%; margin: 0 12px; background: transparent; height: 16px; display: flex; align-items: center; }
-        input[type=range]:focus { outline: none; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: rgba(255, 255, 255, 0.15); border-radius: 2px; cursor: pointer; transition: var(--transition); }
-        input[type=range]:hover::-webkit-slider-runnable-track { background: rgba(255, 255, 255, 0.25); }
-        input[type=range]::-webkit-slider-thumb { height: 12px; width: 12px; border-radius: 50%; background: var(--text-main); cursor: pointer; -webkit-appearance: none; margin-top: -4px; transition: var(--transition); box-shadow: 0 0 5px rgba(0,0,0,0.3); }
-        input[type=range]:hover::-webkit-slider-thumb { background: var(--gold); transform: scale(1.3); box-shadow: 0 0 10px rgba(251, 191, 36, 0.4); }
-
-        .main-controls { display: flex; align-items: center; justify-content: center; gap: 25px; margin-bottom: 20px; }
-        .btn-icon { background: none; border: none; color: var(--text-main); font-size: 22px; cursor: pointer; transition: var(--transition); padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .btn-icon:hover { color: var(--gold); background: rgba(255, 255, 255, 0.05); }
-        .btn-icon:active { transform: scale(0.85); }
+        /* --- GOOGLE LOGIN UI --- */
+        .auth-section { margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; }
+        .btn-google { background: white; color: #333; border: none; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: var(--transition); }
+        .btn-google:hover { background: #f1f5f9; transform: scale(1.02); }
+        .btn-google img { width: 18px; }
         
-        .btn-play { background: var(--gold); color: var(--bg-dark); width: 64px; height: 64px; border-radius: 50%; border: none; font-size: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3); }
-        .btn-play:hover { background: var(--gold-hover); transform: scale(1.05); box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4); }
-        .btn-play:active { transform: scale(0.95); }
+        .user-profile { display: none; align-items: center; gap: 10px; background: rgba(0,0,0,0.2); padding: 5px 15px 5px 5px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .user-profile img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--gold); }
+        .user-profile span { font-size: 12px; font-weight: 600; color: var(--gold); }
+        .btn-logout { background: transparent; color: #ef4444; border: none; font-size: 11px; font-weight: bold; cursor: pointer; text-decoration: underline; margin-left: 5px;}
 
-        .secondary-controls { display: flex; justify-content: center; gap: 12px; }
-        .btn-seek { background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); color: var(--text-muted); padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 5px; }
-        .btn-seek:hover { border-color: var(--gold); color: var(--gold); background: rgba(251, 191, 36, 0.05); }
-        .btn-seek:active { transform: scale(0.95); }
+        .icon-img { width: 75px; margin-bottom: 12px; filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.4)); }
+        h1 { font-size: 22px; margin: 0 0 4px 0; font-weight: 700; color: var(--gold); }
+        p { font-size: 12px; color: var(--text-muted); margin: 0 0 20px 0; font-weight: 500;}
 
-        .btn-toggle-mini { background: rgba(0,0,0,0.2); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 25px; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
-        .btn-toggle-mini:hover { color: var(--text-main); background: rgba(0,0,0,0.4); }
+        .select-wrapper { position: relative; margin-bottom: 15px; }
+        .select-wrapper::after { content: '▼'; font-size: 10px; color: var(--gold); position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+        select { width: 100%; padding: 12px 15px; font-size: 13px; background-color: rgba(30, 41, 59, 0.9); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; cursor: pointer; font-weight: 600; outline: none; appearance: none; }
+        
+        .saved-msg-container { height: 18px; margin-bottom: 10px; }
+        .saved-msg { font-size: 11px; color: #10b981; font-weight: 600; display: none; opacity: 0; transition: opacity 0.3s; }
+        .cloud-msg { color: #3b82f6; } /* Blue for cloud sync */
 
+        .progress-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        input[type=range] { -webkit-appearance: none; width: 100%; margin: 0 10px; background: transparent; height: 16px; display: flex; align-items: center; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: rgba(255, 255, 255, 0.15); border-radius: 2px; cursor: pointer; }
+        input[type=range]::-webkit-slider-thumb { height: 12px; width: 12px; border-radius: 50%; background: var(--text-main); cursor: pointer; -webkit-appearance: none; margin-top: -4px; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+
+        .main-controls { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; width: 100%; }
+        .btn-icon { background: none; border: none; color: var(--text-main); font-size: 20px; cursor: pointer; transition: var(--transition); padding: 5px; }
+        .btn-icon.secondary { font-size: 16px; color: var(--text-muted); } 
+        .btn-icon:hover { color: var(--gold); }
+        .btn-play { background: var(--gold); color: var(--bg-dark); width: 56px; height: 56px; border-radius: 50%; border: none; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3); transition: var(--transition); }
+        
+        .btn-toggle-mini { background: rgba(0,0,0,0.2); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 15px; font-size: 11px; font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); }
+        
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        .loading { animation: spin 1s linear infinite; font-size: 24px; }
+        .loading { animation: spin 1s linear infinite; font-size: 20px; }
 
         /* WIDGET (Mini Player) */
-        #mini-player {
-            display: none; position: fixed; bottom: 20px; right: 20px;
-            background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px; padding: 15px 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            z-index: 9999; width: 290px; backdrop-filter: blur(15px);
-            opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s;
-        }
-        #mini-player.show { display: block; opacity: 1; transform: translateY(0); }
-        #mini-title { font-size: 13px; font-weight: 600; color: var(--gold); margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;}
-        
-        .mini-controls { display: flex; justify-content: center; align-items: center; padding: 0; gap: 8px; }
-        .mini-btn { background: none; border: none; color: var(--text-main); font-size: 15px; cursor: pointer; transition: var(--transition); padding: 5px;}
-        .mini-btn:hover { color: var(--gold); transform: scale(1.1); }
-        
-        .mini-play { background: var(--gold); color: var(--bg-dark); width: 38px; height: 38px; border-radius: 50%; font-size: 16px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(251, 191, 36, 0.2);}
-        
-        .close-mini { position: absolute; top: -8px; right: -8px; background: #334155; color: var(--text-main); border: 2px solid #0f172a; border-radius: 50%; width: 26px; height: 26px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 10px; transition: var(--transition);}
-        .close-mini:hover { background: #ef4444; }
-
-        /* WIDGET PROGRESS BAR (Nayi Line) */
-        .mini-progress-container {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-top: 10px; font-size: 10px; color: var(--text-muted); font-weight: 600; width: 100%;
-        }
+        #mini-player { display: none; position: fixed; bottom: 20px; right: 20px; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 12px 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 9999; width: 260px; opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s; flex-direction: column; align-items: center; justify-content: center; }
+        #mini-player.show { display: flex; opacity: 1; transform: translateY(0); }
+        #mini-title { font-size: 12px; font-weight: 600; color: var(--gold); margin-bottom: 8px; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .mini-controls { display: flex; justify-content: center; align-items: center; width: 100%; gap: 10px; }
+        .mini-btn { background: none; border: none; color: var(--text-main); font-size: 14px; cursor: pointer; padding: 3px;}
+        .mini-play { background: var(--gold); color: var(--bg-dark); width: 36px; height: 36px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center;}
+        .close-mini { position: absolute; top: -6px; right: -6px; background: #334155; color: var(--text-main); border: 2px solid #0f172a; border-radius: 50%; width: 22px; height: 22px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 9px;}
+        .mini-progress-container { display: flex; align-items: center; justify-content: space-between; margin-top: 5px; font-size: 10px; color: var(--text-muted); font-weight: 600; width: 100%; }
         .mini-progress-container input[type=range] { margin: 0 8px; height: 10px; }
         .mini-progress-container input[type=range]::-webkit-slider-runnable-track { height: 3px; }
         .mini-progress-container input[type=range]::-webkit-slider-thumb { height: 10px; width: 10px; margin-top: -3.5px; }
 
-        /* PiP Mode CSS overrides */
         body.pip-mode { margin: 0; padding: 0; background: var(--bg-dark); height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center;}
-        body.pip-mode #mini-player { position: static; width: 100%; height: 100%; border: none; border-radius: 0; box-shadow: none; display: flex; flex-direction: column; justify-content: center; padding: 12px; opacity: 1; transform: none;}
+        body.pip-mode #mini-player { position: static; width: 100%; height: 100%; border: none; border-radius: 0; box-shadow: none; padding: 10px 15px; opacity: 1; transform: none;}
         body.pip-mode .close-mini { display: none; }
-        
-        body.pip-mode #mini-title { font-size: 14px; margin-bottom: 8px; }
-        body.pip-mode .mini-controls { padding: 0; gap: 10px; justify-content: center;}
-        body.pip-mode .mini-btn { font-size: 16px; padding: 2px;}
-        body.pip-mode .mini-play { width: 36px; height: 36px; font-size: 16px; margin: 0 5px;}
-        body.pip-mode .mini-progress-container { margin-top: 12px; }
-
         audio { display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- GOOGLE LOGIN SECTION -->
+        <div class="auth-section">
+            <button id="google-login-btn" class="btn-google" onclick="signInWithGoogle()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+                Sign in to Sync
+            </button>
+            <div id="user-profile" class="user-profile">
+                <img id="user-pic" src="" alt="User">
+                <span id="user-name">User</span>
+                <button class="btn-logout" onclick="logOut()">Logout</button>
+            </div>
+        </div>
+
         <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f54b.svg" alt="Kaaba Icon" class="icon-img">
         <h1>Quran Majeed</h1>
         <p>Qari Mishary Rashid Alafasy</p>
@@ -165,32 +143,27 @@
         </div>
 
         <div class="main-controls">
+            <button class="btn-icon secondary" onclick="seekBackward()" title="-10s">⏪</button>
             <button class="btn-icon" onclick="prevSurah()" title="Previous">⏮</button>
             <button class="btn-play" id="main-play-btn" onclick="togglePlayPause()">▶</button>
             <button class="btn-icon" onclick="nextSurah()" title="Next">⏭</button>
-        </div>
-
-        <div class="secondary-controls">
-            <button class="btn-seek" onclick="seekBackward()">⏪ 10s</button>
-            <button class="btn-seek" onclick="seekForward()">10s ⏩</button>
+            <button class="btn-icon secondary" onclick="seekForward()" title="+10s">⏩</button>
         </div>
 
         <button class="btn-toggle-mini" onclick="toggleFloatingPlayer()">⇱ Pop-out Mini Player</button>
     </div>
 
-    <!-- MINI PLAYER -->
+    <!-- WIDGET PLAYER -->
     <div id="mini-player">
         <button class="close-mini" id="btn-mini-close">✕</button>
         <div id="mini-title">🕋 1. Al-Fatihah</div>
         <div class="mini-controls">
-            <button class="mini-btn" id="btn-mini-seek-back" title="-10s">⏪</button>
-            <button class="mini-btn" id="btn-mini-prev" title="Previous">⏮</button>
+            <button class="mini-btn" id="btn-mini-seek-back">⏪</button>
+            <button class="mini-btn" id="btn-mini-prev">⏮</button>
             <button class="mini-btn mini-play" id="mini-play-btn">▶</button>
-            <button class="mini-btn" id="btn-mini-next" title="Next">⏭</button>
-            <button class="mini-btn" id="btn-mini-seek-fwd" title="+10s">⏩</button>
+            <button class="mini-btn" id="btn-mini-next">⏭</button>
+            <button class="mini-btn" id="btn-mini-seek-fwd">⏩</button>
         </div>
-        
-        <!-- NAYI PROGRESS BAR WIDGET KE LIYE -->
         <div class="mini-progress-container">
             <span id="mini-current-time">00:00</span>
             <input type="range" id="mini-progress-bar" value="0" step="1">
@@ -198,26 +171,121 @@
         </div>
     </div>
 
-    <script>
+    <!-- 🌐 FIREBASE CLOUD SYNC & APP LOGIC SCRIPT 🌐 -->
+    <script type="module">
+        // Import Firebase Functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // Aapki Firebase Keys
+        const firebaseConfig = {
+            apiKey: "AIzaSyANxzo7_DzGXSUnUjqujq93UZNYG7Dw8z0",
+            authDomain: "quran-audio-global.firebaseapp.com",
+            projectId: "quran-audio-global",
+            storageBucket: "quran-audio-global.firebasestorage.app",
+            messagingSenderId: "428217256751",
+            appId: "1:428217256751:web:81ddc88b373ae4467c6fda"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        let cloudUser = null; // Checks if user is logged in
+
+        // UI Elements for Auth
+        const loginBtn = document.getElementById('google-login-btn');
+        const userProfile = document.getElementById('user-profile');
+        const userPic = document.getElementById('user-pic');
+        const userName = document.getElementById('user-name');
+
+        // --- AUTHENTICATION LOGIC ---
+        window.signInWithGoogle = () => {
+            loginBtn.innerHTML = "⏳ Please Wait...";
+            signInWithPopup(auth, provider).catch(error => {
+                alert("Login Error: " + error.message);
+                loginBtn.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"> Sign in to Sync';
+            });
+        };
+
+        window.logOut = () => { signOut(auth); };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User logged in!
+                cloudUser = user;
+                loginBtn.style.display = 'none';
+                userProfile.style.display = 'flex';
+                userPic.src = user.photoURL;
+                userName.innerText = user.displayName.split(" ")[0]; // First name only
+                
+                // Fetch data from Cloud Database!
+                fetchCloudData(user.uid);
+            } else {
+                // User logged out
+                cloudUser = null;
+                loginBtn.style.display = 'flex';
+                loginBtn.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"> Sign in to Sync';
+                userProfile.style.display = 'none';
+            }
+        });
+
+        // Save progress to Google Cloud
+        async function saveToCloud(surahIdx, timeSec) {
+            if(!cloudUser) return;
+            try {
+                await setDoc(doc(db, "users", cloudUser.uid), {
+                    surah: surahIdx,
+                    time: timeSec,
+                    lastUpdated: new Date()
+                });
+            } catch(e) { console.log("Cloud Save Error"); }
+        }
+
+        // Fetch progress from Google Cloud (Cross-Device Sync)
+        async function fetchCloudData(uid) {
+            try {
+                const docRef = doc(db, "users", uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    let data = docSnap.data();
+                    if(data.surah !== undefined && data.time !== undefined) {
+                        currentSurahIndex = parseInt(data.surah);
+                        let cloudTime = parseFloat(data.time);
+                        
+                        // Load cloud data
+                        loadSurah(currentSurahIndex, true);
+                        audioPlayer.addEventListener("loadedmetadata", function setTimeOnce() {
+                            if (cloudTime > 0) {
+                                audioPlayer.currentTime = cloudTime;
+                                lastSaveTime = cloudTime;
+                                showSavedMessage("☁️ Cloud Device Sync Successful!");
+                            }
+                            audioPlayer.removeEventListener("loadedmetadata", setTimeOnce);
+                        });
+                    }
+                }
+            } catch(e) { console.log("Fetch Error"); }
+        }
+
+        // ==========================================
+        // MAIN AUDIO & PLAYER LOGIC
+        // ==========================================
         const surahNames = [
-            "Al-Fatihah", "Al-Baqarah", "Aal-e-Imran", "An-Nisa", "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus",
-            "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr", "An-Nahl", "Al-Isra", "Al-Kahf", "Maryam", "Ta-Ha",
-            "Al-Anbiya", "Al-Hajj", "Al-Mu'minun", "An-Nur", "Al-Furqan", "Ash-Shu'ara", "An-Naml", "Al-Qasas", "Al-Ankabut", "Ar-Rum",
-            "Luqman", "As-Sajdah", "Al-Ahzab", "Saba", "Fatir", "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar", "Ghafir",
-            "Fussilat", "Ash-Shura", "Az-Zukhruf", "Ad-Dukhan", "Al-Jathiyah", "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat", "Qaf",
-            "Ad-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar", "Ar-Rahman", "Al-Waqi'ah", "Al-Hadid", "Al-Mujadila", "Al-Hashr", "Al-Mumtahanah",
-            "As-Saff", "Al-Jumu'ah", "Al-Munafiqun", "At-Taghabun", "At-Talaq", "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haqqah", "Al-Ma'arij",
-            "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyamah", "Al-Insan", "Al-Mursalat", "An-Naba", "An-Nazi'at", "Abasa",
-            "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr", "Al-Balad",
-            "Ash-Shams", "Al-Lail", "Ad-Duha", "Ash-Sharh", "At-Tin", "Al-Alaq", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-Adiyat",
-            "Al-Qari'ah", "At-Takathur", "Al-Asr", "Al-Humazah", "Al-Fil", "Quraish", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun", "An-Nasr",
-            "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
+            "Al-Fatihah", "Al-Baqarah", "Aal-e-Imran", "An-Nisa", "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus", "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr", "An-Nahl", "Al-Isra", "Al-Kahf", "Maryam", "Ta-Ha", "Al-Anbiya", "Al-Hajj", "Al-Mu'minun", "An-Nur", "Al-Furqan", "Ash-Shu'ara", "An-Naml", "Al-Qasas", "Al-Ankabut", "Ar-Rum", "Luqman", "As-Sajdah", "Al-Ahzab", "Saba", "Fatir", "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar", "Ghafir", "Fussilat", "Ash-Shura", "Az-Zukhruf", "Ad-Dukhan", "Al-Jathiyah", "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat", "Qaf", "Ad-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar", "Ar-Rahman", "Al-Waqi'ah", "Al-Hadid", "Al-Mujadila", "Al-Hashr", "Al-Mumtahanah", "As-Saff", "Al-Jumu'ah", "Al-Munafiqun", "At-Taghabun", "At-Talaq", "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haqqah", "Al-Ma'arij", "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyamah", "Al-Insan", "Al-Mursalat", "An-Naba", "An-Nazi'at", "Abasa", "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr", "Al-Balad", "Ash-Shams", "Al-Lail", "Ad-Duha", "Ash-Sharh", "At-Tin", "Al-Alaq", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-Adiyat", "Al-Qari'ah", "At-Takathur", "Al-Asr", "Al-Humazah", "Al-Fil", "Quraish", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun", "An-Nasr", "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
         ];
 
         let currentSurahIndex = 0;
         let isDragging = false; 
+        let lastSaveTime = 0; 
+        let isNextPreloaded = false; 
 
         const audioPlayer = document.getElementById("audio-player");
+        const nextPreloader = new Audio(); 
+        
         const surahDropdown = document.getElementById("surah-list");
         const mainPlayBtn = document.getElementById("main-play-btn");
         const progressBar = document.getElementById("progress-bar");
@@ -230,7 +298,6 @@
         const miniProgressBar = document.getElementById("mini-progress-bar");
         const miniCurrentTimeEl = document.getElementById("mini-current-time");
         const miniTotalTimeEl = document.getElementById("mini-total-time");
-        
         const savedMsg = document.getElementById("saved-msg");
 
         let pipWindow = null; 
@@ -241,12 +308,21 @@
             surahDropdown.appendChild(option);
         });
 
-        document.getElementById("btn-mini-close").addEventListener("click", closeMiniPlayer);
-        document.getElementById("btn-mini-seek-back").addEventListener("click", seekBackward);
-        document.getElementById("btn-mini-prev").addEventListener("click", prevSurah);
-        document.getElementById("mini-play-btn").addEventListener("click", togglePlayPause);
-        document.getElementById("btn-mini-next").addEventListener("click", nextSurah);
-        document.getElementById("btn-mini-seek-fwd").addEventListener("click", seekForward);
+        // Exposing functions to window so HTML buttons can click them
+        window.closeMiniPlayer = () => { if (pipWindow) { pipWindow.close(); } else { miniPlayer.classList.remove('show'); } };
+        window.seekBackward = () => { if (isFinite(audioPlayer.duration)) audioPlayer.currentTime = Math.max(audioPlayer.currentTime - 10, 0); };
+        window.seekForward = () => { if (isFinite(audioPlayer.duration)) audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 10, audioPlayer.duration); };
+        window.prevSurah = () => { if (currentSurahIndex > 0) { currentSurahIndex--; loadSurah(currentSurahIndex); } };
+        window.nextSurah = (autoPlayed = false) => { currentSurahIndex = (currentSurahIndex < 113) ? currentSurahIndex + 1 : 0; loadSurah(currentSurahIndex, false, autoPlayed); };
+        window.togglePlayPause = () => { if (audioPlayer.paused) audioPlayer.play(); else audioPlayer.pause(); };
+        window.changeSurahFromList = () => { currentSurahIndex = parseInt(surahDropdown.value); loadSurah(currentSurahIndex); };
+
+        document.getElementById("btn-mini-close").addEventListener("click", window.closeMiniPlayer);
+        document.getElementById("btn-mini-seek-back").addEventListener("click", window.seekBackward);
+        document.getElementById("btn-mini-prev").addEventListener("click", window.prevSurah);
+        document.getElementById("mini-play-btn").addEventListener("click", window.togglePlayPause);
+        document.getElementById("btn-mini-next").addEventListener("click", window.nextSurah);
+        document.getElementById("btn-mini-seek-fwd").addEventListener("click", window.seekForward);
 
         function formatTime(sec) {
             if (isNaN(sec) || !isFinite(sec)) return "00:00";
@@ -268,122 +344,98 @@
         audioPlayer.addEventListener('playing', hideLoading);
         audioPlayer.addEventListener('canplay', hideLoading);
 
-        async function toggleFloatingPlayer() {
+        window.toggleFloatingPlayer = async () => {
             if ('documentPictureInPicture' in window) {
                 if (pipWindow) { pipWindow.close(); return; }
                 try {
-                    // Height slightly increased taake progress bar sakoon se poori aa jaye (270x125)
-                    pipWindow = await window.documentPictureInPicture.requestWindow({ width: 270, height: 125 });
-                    const style = document.createElement('style');
-                    style.textContent = document.getElementById('main-styles').textContent;
+                    pipWindow = await window.documentPictureInPicture.requestWindow({ width: 280, height: 110 });
+                    const style = document.createElement('style'); style.textContent = document.getElementById('main-styles').textContent;
                     pipWindow.document.head.appendChild(style);
-
                     pipWindow.document.body.classList.add('pip-mode');
-                    miniPlayer.style.display = 'flex';
-                    pipWindow.document.body.appendChild(miniPlayer);
-
+                    miniPlayer.classList.add('show'); pipWindow.document.body.appendChild(miniPlayer);
                     pipWindow.addEventListener("pagehide", () => {
-                        document.body.appendChild(miniPlayer);
-                        miniPlayer.classList.remove('show');
-                        setTimeout(() => { if(!pipWindow) miniPlayer.style.display = 'none'; }, 300);
-                        pipWindow = null;
+                        document.body.appendChild(miniPlayer); miniPlayer.classList.remove('show'); pipWindow = null;
                     });
-                } catch (error) { normalMiniPlayer(); }
-            } else { normalMiniPlayer(); }
-        }
-
-        function normalMiniPlayer() {
-            if (miniPlayer.classList.contains('show')) {
-                miniPlayer.classList.remove('show');
-                setTimeout(() => { miniPlayer.style.display = 'none'; }, 300);
+                } catch (error) { 
+                    if (miniPlayer.classList.contains('show')) miniPlayer.classList.remove('show');
+                    else miniPlayer.classList.add('show');
+                }
             } else {
-                miniPlayer.style.display = 'block';
-                setTimeout(() => { miniPlayer.classList.add('show'); }, 10);
+                if (miniPlayer.classList.contains('show')) miniPlayer.classList.remove('show');
+                else miniPlayer.classList.add('show');
             }
-        }
-
-        function closeMiniPlayer() {
-            if (pipWindow) { pipWindow.close(); } 
-            else { normalMiniPlayer(); }
-        }
-
-        function togglePlayPause() {
-            if (audioPlayer.paused) audioPlayer.play(); else audioPlayer.pause();
-        }
+        };
 
         audioPlayer.addEventListener('play', () => { mainPlayBtn.innerHTML = "⏸"; miniPlayBtn.innerHTML = "⏸"; });
-        audioPlayer.addEventListener('pause', () => { mainPlayBtn.innerHTML = "▶"; miniPlayBtn.innerHTML = "▶"; });
+        audioPlayer.addEventListener('pause', () => { 
+            mainPlayBtn.innerHTML = "▶"; miniPlayBtn.innerHTML = "▶"; 
+            localStorage.setItem("quran_saved_time", audioPlayer.currentTime);
+            saveToCloud(currentSurahIndex, audioPlayer.currentTime); // Cloud save on pause
+        });
 
-        // Update BOTH Progress Bars
         audioPlayer.addEventListener('timeupdate', () => {
             if (audioPlayer.duration && !isDragging) {
-                let currTime = audioPlayer.currentTime;
+                let currTime = audioPlayer.currentTime; let duration = audioPlayer.duration;
                 let formattedTime = formatTime(currTime);
                 
-                progressBar.value = currTime;
-                currentTimeEl.innerText = formattedTime;
+                if (currentTimeEl.innerText !== formattedTime) {
+                    progressBar.value = currTime; currentTimeEl.innerText = formattedTime;
+                    miniProgressBar.value = currTime; miniCurrentTimeEl.innerText = formattedTime;
+                }
                 
-                miniProgressBar.value = currTime;
-                miniCurrentTimeEl.innerText = formattedTime;
-                
-                if (currTime > 0) localStorage.setItem("quran_saved_time", currTime);
+                // Save locally and to cloud every 5 seconds
+                if (currTime - lastSaveTime > 5 || currTime < lastSaveTime) {
+                    localStorage.setItem("quran_saved_time", currTime);
+                    saveToCloud(currentSurahIndex, currTime); // ☁️ CLOUD SYNC
+                    lastSaveTime = currTime;
+                }
+
+                if (duration - currTime < 15 && !isNextPreloaded) {
+                    if (currentSurahIndex < 113) {
+                        let nextSurahNumber = (currentSurahIndex + 2).toString().padStart(3, '0');
+                        nextPreloader.src = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${nextSurahNumber}.mp3`;
+                        nextPreloader.preload = "auto";
+                        isNextPreloaded = true; 
+                    }
+                }
             }
         });
 
         audioPlayer.addEventListener('loadedmetadata', () => {
-            let total = audioPlayer.duration;
-            let formattedTotal = formatTime(total);
-            
-            progressBar.max = total;
-            totalTimeEl.innerText = formattedTotal;
-            
-            miniProgressBar.max = total;
-            miniTotalTimeEl.innerText = formattedTotal;
+            let total = audioPlayer.duration; let formattedTotal = formatTime(total);
+            progressBar.max = total; totalTimeEl.innerText = formattedTotal;
+            miniProgressBar.max = total; miniTotalTimeEl.innerText = formattedTotal;
         });
 
-        // Main Bar Drag Logic
-        progressBar.addEventListener('mousedown', () => isDragging = true);
-        progressBar.addEventListener('touchstart', () => isDragging = true);
+        progressBar.addEventListener('mousedown', () => isDragging = true); progressBar.addEventListener('touchstart', () => isDragging = true);
         progressBar.addEventListener('input', () => currentTimeEl.innerText = formatTime(progressBar.value));
-        const endDrag = () => { if(isDragging){ isDragging = false; audioPlayer.currentTime = progressBar.value; } };
-        progressBar.addEventListener('mouseup', endDrag);
-        progressBar.addEventListener('touchend', endDrag);
+        const endDrag = () => { if(isDragging){ isDragging = false; audioPlayer.currentTime = progressBar.value; localStorage.setItem("quran_saved_time", audioPlayer.currentTime); saveToCloud(currentSurahIndex, audioPlayer.currentTime); } };
+        progressBar.addEventListener('mouseup', endDrag); progressBar.addEventListener('touchend', endDrag);
 
-        // Mini Bar Drag Logic
-        miniProgressBar.addEventListener('mousedown', () => isDragging = true);
-        miniProgressBar.addEventListener('touchstart', () => isDragging = true);
+        miniProgressBar.addEventListener('mousedown', () => isDragging = true); miniProgressBar.addEventListener('touchstart', () => isDragging = true);
         miniProgressBar.addEventListener('input', () => miniCurrentTimeEl.innerText = formatTime(miniProgressBar.value));
-        const endMiniDrag = () => { if(isDragging){ isDragging = false; audioPlayer.currentTime = miniProgressBar.value; } };
-        miniProgressBar.addEventListener('mouseup', endMiniDrag);
-        miniProgressBar.addEventListener('touchend', endMiniDrag);
+        const endMiniDrag = () => { if(isDragging){ isDragging = false; audioPlayer.currentTime = miniProgressBar.value; localStorage.setItem("quran_saved_time", audioPlayer.currentTime); saveToCloud(currentSurahIndex, audioPlayer.currentTime); } };
+        miniProgressBar.addEventListener('mouseup', endMiniDrag); miniProgressBar.addEventListener('touchend', endMiniDrag);
 
         function updateMediaSession(index) {
             if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: `${index + 1}. ${surahNames[index]}`,
-                    artist: 'Qari Mishary Rashid Alafasy',
-                    artwork: [{ src: 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f54b.png', sizes: '72x72', type: 'image/png' }]
-                });
-                navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
-                navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
-                navigator.mediaSession.setActionHandler('previoustrack', prevSurah);
-                navigator.mediaSession.setActionHandler('nexttrack', nextSurah);
-                navigator.mediaSession.setActionHandler('seekbackward', seekBackward);
-                navigator.mediaSession.setActionHandler('seekforward', seekForward);
+                navigator.mediaSession.metadata = new MediaMetadata({ title: `${index + 1}. ${surahNames[index]}`, artist: 'Qari Mishary Rashid Alafasy', artwork: [{ src: 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f54b.png', sizes: '72x72', type: 'image/png' }] });
+                navigator.mediaSession.setActionHandler('play', () => audioPlayer.play()); navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause()); navigator.mediaSession.setActionHandler('previoustrack', window.prevSurah); navigator.mediaSession.setActionHandler('nexttrack', window.nextSurah); navigator.mediaSession.setActionHandler('seekbackward', window.seekBackward); navigator.mediaSession.setActionHandler('seekforward', window.seekForward);
             }
         }
 
-        function showSavedMessage() {
+        function showSavedMessage(msgText = "✓ Wahan se shuru kiya gaya jahan chhora tha") {
+            savedMsg.innerText = msgText;
+            if(msgText.includes("Cloud")) savedMsg.classList.add("cloud-msg");
+            else savedMsg.classList.remove("cloud-msg");
+
             savedMsg.style.display = "block";
             setTimeout(() => { savedMsg.style.opacity = "1"; }, 10);
-            setTimeout(() => { 
-                savedMsg.style.opacity = "0"; 
-                setTimeout(() => { savedMsg.style.display = "none"; }, 300);
-            }, 4000);
+            setTimeout(() => { savedMsg.style.opacity = "0"; setTimeout(() => { savedMsg.style.display = "none"; }, 300); }, 4000);
         }
 
-        function loadSurah(index, isResuming = false) {
-            showLoading(); 
+        function loadSurah(index, isResuming = false, autoPlayNext = false) {
+            isNextPreloaded = false; 
             let surahNumber = (index + 1).toString().padStart(3, '0');
             audioPlayer.src = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${surahNumber}.mp3`;
             
@@ -394,43 +446,46 @@
             localStorage.setItem("quran_saved_surah", index);
             updateMediaSession(index);
 
-            // Reset UI
-            progressBar.value = 0;
-            miniProgressBar.value = 0;
-            currentTimeEl.innerText = "00:00";
-            miniCurrentTimeEl.innerText = "00:00";
-            if(!isResuming) {
-                totalTimeEl.innerText = "00:00";
-                miniTotalTimeEl.innerText = "00:00";
-            }
+            progressBar.value = 0; miniProgressBar.value = 0;
+            currentTimeEl.innerText = "00:00"; miniCurrentTimeEl.innerText = "00:00";
+            if(!isResuming) { totalTimeEl.innerText = "00:00"; miniTotalTimeEl.innerText = "00:00"; }
 
-            if (!isResuming) {
+            if (!isResuming || autoPlayNext) {
                 localStorage.setItem("quran_saved_time", 0);
+                lastSaveTime = 0;
+                showLoading();
+                audioPlayer.load(); 
                 audioPlayer.play().catch(e => hideLoading());
+                saveToCloud(index, 0); // ☁️ Sync new track to cloud
             }
         }
-
-        function prevSurah() { if (currentSurahIndex > 0) { currentSurahIndex--; loadSurah(currentSurahIndex); } }
-        function nextSurah() { currentSurahIndex = (currentSurahIndex < 113) ? currentSurahIndex + 1 : 0; loadSurah(currentSurahIndex); }
-        function seekForward() { if (isFinite(audioPlayer.duration)) audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 10, audioPlayer.duration); }
-        function seekBackward() { if (isFinite(audioPlayer.duration)) audioPlayer.currentTime = Math.max(audioPlayer.currentTime - 10, 0); }
         
-        audioPlayer.addEventListener("ended", nextSurah);
-        function changeSurahFromList() { currentSurahIndex = parseInt(surahDropdown.value); loadSurah(currentSurahIndex); }
+        audioPlayer.addEventListener("ended", () => window.nextSurah(true));
+        
+        window.addEventListener("beforeunload", () => {
+            if(audioPlayer.currentTime > 0) {
+                localStorage.setItem("quran_saved_time", audioPlayer.currentTime);
+                saveToCloud(currentSurahIndex, audioPlayer.currentTime); // Sync on tab close
+            }
+        });
 
+        // App Boot Logic (Check local storage only if cloud isn't loaded yet)
         window.onload = () => {
-            let savedSurah = localStorage.getItem("quran_saved_surah");
-            let savedTime = localStorage.getItem("quran_saved_time");
-            if (savedSurah !== null) currentSurahIndex = parseInt(savedSurah);
-            loadSurah(currentSurahIndex, true);
-            
-            audioPlayer.addEventListener("loadedmetadata", function setTimeOnce() {
-                if (savedTime !== null && parseFloat(savedTime) > 0) {
-                    audioPlayer.currentTime = parseFloat(savedTime);
-                    showSavedMessage();
-                }
-                audioPlayer.removeEventListener("loadedmetadata", setTimeOnce);
-            });
+            if(!cloudUser) {
+                let savedSurah = localStorage.getItem("quran_saved_surah");
+                let savedTime = localStorage.getItem("quran_saved_time");
+                if (savedSurah !== null) currentSurahIndex = parseInt(savedSurah);
+                loadSurah(currentSurahIndex, true);
+                
+                audioPlayer.addEventListener("loadedmetadata", function setTimeOnce() {
+                    if (savedTime !== null && parseFloat(savedTime) > 0) {
+                        audioPlayer.currentTime = parseFloat(savedTime);
+                        lastSaveTime = parseFloat(savedTime);
+                        showSavedMessage();
+                    }
+                    audioPlayer.removeEventListener("loadedmetadata", setTimeOnce);
+                });
+            }
         };
     </script>
 </body>
